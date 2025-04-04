@@ -6,10 +6,10 @@ const char* password = "XRFKA3PENU4E";
 void setup() {
   Serial.begin(9600);
    delay(2000);
-  WiFi.begin(ssid, password);  // "Wifi" değil "WiFi" (büyük/küçük harf önemli!)
+  WiFi.begin(ssid, password);  
   
   Serial.print("WiFi bağlanıyor");
-  while (WiFi.status() != WL_CONNECTED) {  // Noktalı virgül kaldırıldı!
+  while (WiFi.status() != WL_CONNECTED) {  
     delay(500);
     Serial.print(".");
   }
@@ -20,5 +20,5 @@ void setup() {
 }
 
 void loop() {
-  // Ana kod buraya yazılır
+  
 }
