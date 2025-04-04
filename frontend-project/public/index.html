@@ -1,0 +1,30 @@
+d<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frontend Proje</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Hoş Geldiniz</h1>
+    </header>
+    <main>
+        <section id="user-registration">
+            <h2>Kayıt Ol</h2>
+            <input type="text" id="username" placeholder="Kullanıcı Adı">
+            <button onclick="registerUser()">Kayıt Ol</button>
+        </section>
+        <section id="user-login">
+            <h2>Giriş Yap</h2>
+            <button onclick="loginUser()">Giriş Yap</button>
+        </section>
+        <section id="details">
+            <h2>Detaylar</h2>
+            <button onclick="goToDetail(1)">Detayları Görüntüle</button>
+        </section>
+    </main>
+    <script src="js/script.js"></script>
+</body>
+</html>

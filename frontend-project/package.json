@@ -1,0 +1,22 @@
+{
+  "name": "frontend-project",
+  "version": "1.0.0",
+  "description": "A simple frontend project for user registration and detail viewing.",
+  "main": "src/js/script.js",
+  "scripts": {
+    "start": "live-server public",
+    "build": "echo 'Build step not defined'",
+    "test": "echo 'No tests defined'"
+  },
+  "keywords": [
+    "frontend",
+    "html",
+    "css",
+    "javascript"
+  ],
+  "author": "Your Name",
+  "license": "ISC",
+  "dependencies": {
+    "live-server": "^1.2.1"
+  }
+}

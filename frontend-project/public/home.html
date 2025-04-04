@@ -1,0 +1,22 @@
+html
+Kopyala
+Düzenle
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Ana Sayfa</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="container">
+    <h2>Merhaba, <span id="usernameDisplay">Kullanıcı</span></h2>
+    <div class="card-list">
+      <div class="card" onclick="goToDetail('kart1')">🟩 Fabrika Kartı</div>
+      <div class="card" onclick="goToDetail('kart2')">🟦 Ofis Kartı</div>
+    </div>
+    <button onclick="alert('Yeni kart ekleme gelecekte eklenecek')">+ Yeni Kart Ekle</button>
+  </div>
+</body>
+<script src="js/script.js"></script>
+</html>
