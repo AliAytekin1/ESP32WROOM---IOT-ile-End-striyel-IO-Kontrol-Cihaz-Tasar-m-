@@ -1,30 +1,58 @@
-d<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Frontend Proje</title>
-    <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8">
+  <title>Giriş / Kayıt</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <header>
-        <h1>Hoş Geldiniz</h1>
-    </header>
-    <main>
-        <section id="user-registration">
-            <h2>Kayıt Ol</h2>
-            <input type="text" id="username" placeholder="Kullanıcı Adı">
-            <button onclick="registerUser()">Kayıt Ol</button>
-        </section>
-        <section id="user-login">
-            <h2>Giriş Yap</h2>
-            <button onclick="loginUser()">Giriş Yap</button>
-        </section>
-        <section id="details">
-            <h2>Detaylar</h2>
-            <button onclick="goToDetail(1)">Detayları Görüntüle</button>
-        </section>
-    </main>
-    <script src="js/script.js"></script>
+  <div class="form-container">
+    <div id="loginBox" class="form-box active">
+      <h2>Giriş Yap</h2>
+      <form onsubmit="loginUser(); return false;">
+        <label for="loginEmail">Kullanıcı Adı (E-posta)</label>
+        <input type="email" id="loginEmail" placeholder="E-posta" required>
+        
+        <label for="loginPassword">Şifre</label>
+        <input type="password" id="loginPassword" placeholder="Şifre" required>
+        
+        <button type="submit">Giriş Yap</button>
+      </form>
+      <p><a href="#" onclick="toggleForm()">Kayıt Ol</a></p>
+    </div>
+
+    <div id="registerBox" class="form-box hidden">
+      <h2>Kayıt Ol</h2>
+      <form onsubmit="registerUser(); return false;">
+        <label for="username">Kullanıcı Adı</label>
+        <input type="text" id="username" placeholder="Kullanıcı Adı" required>
+
+        <label for="email">E-posta</label>
+        <input type="email" id="email" placeholder="E-posta" required>
+
+        <label for="password">Şifre</label>
+        <input type="password" id="password" placeholder="Şifre" required>
+
+        <button type="submit">Kayıt Ol</button>
+      </form>
+      <p><a href="#" onclick="toggleForm()">Giriş Yap</a></p>
+    </div>
+  </div>
+
+  <script>
+   function toggleForm() {
+  const loginBox = document.getElementById('loginBox');
+  const registerBox = document.getElementById('registerBox');
+
+  if (loginBox.classList.contains('active')) {
+    loginBox.classList.remove('active');
+    registerBox.classList.add('active');
+  } else {
+    registerBox.classList.remove('active');
+    loginBox.classList.add('active');
+  }
+}
+  </script>
+  <script src="js/script.js"></script>
 </body>
 </html>
