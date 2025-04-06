@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -8,13 +7,120 @@
 </head>
 <body>
   <div class="container">
-    <h2>Merhaba, <span id="usernameDisplay">Kullanıcı</span></h2>
-    <div class="card-list">
-      <div class="card" onclick="goToDetail('kart1')">🟩 Fabrika Kartı</div>
-      <div class="card" onclick="goToDetail('kart2')">🟦 Ofis Kartı</div>
+    <h2>HOŞGELDİN, <span id="usernameDisplay">Kullanıcı</span></h2>
+    <div class="card-list" id="cardList"></div>
+    <button id="addCardButton" onclick="showCardForm()">+ Yeni Kart Ekle</button>
+    <button onclick="logout()">Çıkış Yap</button>
+
+    <!-- Kart ekleme formu -->
+    <div id="cardForm" class="hidden">
+      <input type="text" id="cardName" placeholder="Kart Adı">
+      <button onclick="addCard()">Kartı Ekle</button>
+      <button onclick="closeCardForm()">İptal</button>
     </div>
-    <button onclick="alert('Yeni kart ekleme gelecekte eklenecek')">+ Yeni Kart Ekle</button>
   </div>
+
+  <script>
+    const username = localStorage.getItem('username');
+    const role = localStorage.getItem('role');
+    if (username) {
+      document.getElementById('usernameDisplay').textContent = username;
+    }
+
+    const cardList = document.getElementById('cardList');
+    const cards = JSON.parse(localStorage.getItem('cards')) || [
+      { id: 'kart1', name: '🟩 Fabrika Kartı', visibleToAll: true, requiresPermission: false, approved: true },
+      { id: 'kart2', name: '🗭 Ofis Kartı', visibleToAll: true, requiresPermission: false, approved: true }
+    ];
+
+    function renderCards() {
+      cardList.innerHTML = '';
+      cards.forEach(card => {
+        if (card.visibleToAll || card.createdBy === username || role === 'admin') {
+          const cardDiv = document.createElement('div');
+          cardDiv.className = 'card';
+          cardDiv.textContent = card.name;
+
+          if (card.requiresPermission && !card.approved) {
+            cardDiv.textContent += ' (Onay Bekliyor)';
+            cardDiv.style.opacity = '0.5';
+          } else if (card.requiresPermission && card.approved) {
+            if (role === 'admin' || card.createdBy === username) {
+              cardDiv.onclick = () => goToDetail(card.id);
+            } else {
+              cardDiv.textContent += ' (Erişim İzni Gerekiyor)';
+              cardDiv.onclick = () => requestPermission(card.id, card.name);
+            }
+          } else {
+            cardDiv.onclick = () => goToDetail(card.id);
+          }
+
+          cardList.appendChild(cardDiv);
+        }
+      });
+    }
+
+    function showCardForm() {
+      document.getElementById('cardForm').classList.remove('hidden');
+    }
+
+    function closeCardForm() {
+      document.getElementById('cardForm').classList.add('hidden');
+    }
+
+    function addCard() {
+      const cardName = document.getElementById('cardName').value;
+      if (!cardName) {
+        alert('Kart adı boş olamaz!');
+        return;
+      }
+
+      const newCard = {
+        id: `kart${cards.length + 1}`,
+        name: cardName,
+        createdBy: username,
+        visibleToAll: true,
+        requiresPermission: false,
+        approved: true
+      };
+
+      if (role === 'admin') {
+        newCard.visibleToAll = false;
+        newCard.requiresPermission = true;
+        newCard.approved = false;
+      }
+
+      cards.push(newCard);
+      localStorage.setItem('cards', JSON.stringify(cards));
+      renderCards();
+      closeCardForm();
+
+      if (role !== 'admin') {
+        alert('Kart başarıyla eklendi.');
+      }
+    }
+
+    function requestPermission(cardId, cardName) {
+      const username = localStorage.getItem('username');
+      const accessRequests = JSON.parse(localStorage.getItem('accessRequests')) || [];
+      accessRequests.push({ cardId, cardName, username });
+      localStorage.setItem('accessRequests', JSON.stringify(accessRequests));
+      alert(`${cardName} kartına erişim izni için admin onayı bekleniyor.`);
+    }
+
+    function goToDetail(cardId) {
+      alert(`${cardId} detayına yönlendiriliyorsunuz!`);
+      // Detay sayfasına yönlendirme yapabilirsin
+      // window.location.href = `detail.html?card=${cardId}`;
+    }
+
+    function logout() {
+      localStorage.removeItem('username');
+      localStorage.removeItem('role');
+      window.location.href = 'login.html';
+    }
+
+    renderCards();
+  </script>
 </body>
-<script src="js/script.js"></script>
 </html>

@@ -127,3 +127,106 @@ button {
 button:hover {
   background-color: #218838;
 }
+
+/* // KAYIT OL UYARI MESAJINI GÖSTEREN KUTUYU DÜZENLEME */
+#customAlert {
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #f8d7da; /* Kırmızımsı arka plan */
+  color: #721c24; /* Koyu kırmızı yazı */
+  padding: 20px;
+  border: 1px solid #f5c6cb;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  z-index: 1000;
+  width: 300px;
+}
+
+#customAlert button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#customAlert button:hover {
+  background-color: #0056b3;
+}
+
+.hidden {
+  display: none;
+}
+
+/* // GİRİŞ YAP UYARI MESAJINI GÖSTEREN KUTUYU DÜZENLEME */
+
+.card-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2 sütunlu düzen */
+  gap: 10px; /* Kartlar arasındaki boşluk */
+  margin-bottom: 20px;
+}
+
+.card {
+  padding: 15px;
+  background-color: #007bff;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  font-size: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.card:hover {
+  background-color: #0056b3;
+}
+
+/* //YETKİSİZ ERİŞİM MESAJI */
+.hidden {
+  display: none;
+}
+
+#accessDenied {
+  text-align: center;
+  margin-top: 50px;
+}
+
+#accessDenied h2 {
+  color: red;
+  font-size: 24px;
+}
+
+#accessDenied table {
+  border-collapse: collapse;
+  margin: 20px auto;
+  width: 60%;
+}
+
+#accessDenied table, #accessDenied th, #accessDenied td {
+  border: 1px solid #ddd;
+}
+
+#accessDenied th, #accessDenied td {
+  padding: 10px;
+  text-align: center;
+}
+
+#accessDenied button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#accessDenied button:hover {
+  background-color: #0056b3;
+}
+

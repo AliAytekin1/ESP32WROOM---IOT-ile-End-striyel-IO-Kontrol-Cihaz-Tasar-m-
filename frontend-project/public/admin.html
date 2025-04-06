@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Paneli</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="container">
+    <h2>HOŞGELDİN, <span id="adminName">Admin</span></h2>
+    <div class="card-list" id="cardList"></div>
+    <button id="addCardButton" onclick="showCardForm()">+ Yeni Kart Ekle</button>
+
+    <!-- Kart ekleme formu -->
+    <div id="cardForm" class="hidden">
+      <input type="text" id="cardName" placeholder="Kart Adı">
+      <button onclick="addCard()">Kartı Ekle</button>
+      <button onclick="closeCardForm()">İptal</button>
+    </div>
+    <button onclick="logout()">Çıkış Yap</button>
+  </div>
+
+  <script>
+    // Kullanıcının oturum bilgilerini kontrol et
+    const role = localStorage.getItem('role');
+    const username = localStorage.getItem('username');
+    const cardList = document.getElementById('cardList');
+    const cards = JSON.parse(localStorage.getItem('cards')) || [];
+    const accessRequests = JSON.parse(localStorage.getItem('accessRequests')) || [];
+
+    if (!role || role !== 'admin') {
+      alert('Bu sayfaya erişim izniniz yok!');
+      window.location.href = 'index.html';
+    } else {
+      // Admin adını göster
+      if (username) {
+        document.getElementById('adminName').textContent = username;
+      }
+    }
+
+    // Kartları ve erişim isteklerini listeleme
+    function renderCards() {
+      cardList.innerHTML = ''; // Önce listeyi temizle
+
+      // Kartları listele
+      cards.forEach(card => {
+        if (card.createdBy === username || card.requiresPermission) {
+          const cardDiv = document.createElement('div');
+          cardDiv.className = 'card';
+          cardDiv.textContent = card.name;
+
+          // Eğer kart onay bekliyorsa onay butonu ekle
+          if (card.requiresPermission && !card.approved) {
+            const approveButton = document.createElement('button');
+            approveButton.textContent = 'Onayla';
+            approveButton.onclick = () => approveCard(card.id);
+            cardDiv.appendChild(approveButton);
+          }
+
+          cardList.appendChild(cardDiv);
+        }
+      });
+
+      // Erişim isteklerini listele
+      accessRequests.forEach(request => {
+        const requestDiv = document.createElement('div');
+        requestDiv.className = 'request';
+        requestDiv.textContent = `${request.username} kullanıcısı ${request.cardName} kartına erişim izni istiyor.`;
+
+        const approveButton = document.createElement('button');
+        approveButton.textContent = 'Onayla';
+        approveButton.onclick = () => approveAccessRequest(request.cardId, request.username);
+        requestDiv.appendChild(approveButton);
+
+        cardList.appendChild(requestDiv);
+      });
+    }
+
+    function showCardForm() {
+      document.getElementById('cardForm').classList.remove('hidden');
+    }
+
+    function closeCardForm() {
+      document.getElementById('cardForm').classList.add('hidden');
+    }
+
+    function addCard() {
+      const cardName = document.getElementById('cardName').value;
+      if (!cardName) {
+        alert('Kart adı boş olamaz!');
+        return;
+      }
+
+      const newCard = { 
+        id: `kart${cards.length + 1}`,
+        name: cardName,
+        createdBy: username,
+        visibleToAll: role !== 'admin', // Admin eklerse sadece admin görebilir
+        requiresPermission: role === 'admin', // Admin eklerse erişim izni gerektirir
+        approved: role !== 'admin' // Admin eklerse otomatik onaylanmaz
+      };
+
+      cards.push(newCard);
+      localStorage.setItem('cards', JSON.stringify(cards));
+      renderCards();
+      document.getElementById('cardName').value = ''; // Kart adı girişini temizle
+      alert('Kart başarıyla eklendi.');
+      closeCardForm();
+    }
+
+    function approveCard(cardId) {
+      const card = cards.find(c => c.id === cardId);
+      if (card) {
+        card.approved = true;
+        localStorage.setItem('cards', JSON.stringify(cards));
+        renderCards();
+        alert(`${card.name} kartı onaylandı.`);
+      }
+    }
+
+    function approveAccessRequest(cardId, username) {
+      const requestIndex = accessRequests.findIndex(req => req.cardId === cardId && req.username === username);
+      if (requestIndex !== -1) {
+        accessRequests.splice(requestIndex, 1); // İsteği kaldır
+        localStorage.setItem('accessRequests', JSON.stringify(accessRequests));
+        alert(`${username} kullanıcısına ${cardId} kartına erişim izni verildi.`);
+        renderCards();
+      }
+    }
+
+    function goToDetail(cardId) {
+      alert(`${cardId} detayına yönlendiriliyorsunuz!`);
+      // Detay sayfasına yönlendirme yapılabilir
+      // window.location.href = `detail.html?card=${cardId}`;
+    }
+
+    function logout() {
+      localStorage.clear(); // Oturum bilgilerini temizle
+      window.location.href = 'index.html'; // Giriş sayfasına yönlendir
+    }
+
+    // Sayfa yüklendiğinde kartları render et
+    renderCards();
+  </script>
+</body>
+</html>
